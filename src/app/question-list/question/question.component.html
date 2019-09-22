@@ -1,0 +1,42 @@
+<div *ngIf="question">
+  <h1>Question {{question.index}}</h1>
+  <br />
+  <div>
+    <h3>{{ question.question }}</h3>
+    <form #formDirective="ngForm" [formGroup]="questionForm" class="example-container" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div *ngIf="isSubmitted && f.answer.errors" class="invalid-feedback">
+          <div *ngIf="f.answer.errors.required">Please provide answer</div>
+        </div>
+        <div *ngFor="let opt of question.options;let i = index;" class="radio"
+          [ngClass]="{ 'is-invalid': isSubmitted && f.answer.errors }">
+          <label>
+            <input [checked]="opt.id == selectedAns" formControlName="answer" type="radio" class="form" name="answer"
+              [value]="opt.id"> {{opt.name}}
+          </label>
+        </div>
+      </div>
+      <div class="form-actions row">
+        <div class="col-md-3">
+          <button *ngIf="nextQuestion>=1;else finish" type="submit" class="btn btn-primary">Answer</button>
+          <ng-template #finish>
+            <button type="submit" class="btn btn-success">Complete</button>
+          </ng-template>
+        </div>
+        <div class="col-md-3">
+          <nav class="float-right">
+            <i style="font-size:12px;color:blue" class="fa fa-arrow-left"></i>
+            <a [routerLink]="prevUrl" [class.disabled]="nextQuestion==2" class="btn btn-secondary btn-action btn-lg">
+              <i class="icon icon-back"></i>
+            </a>
+            <a [routerLink]="nextUrl" [class.disabled]="nextQuestion==-1" class="btn btn-secondary btn-action btn-lg">
+              <i class="icon icon-forward"></i>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</div>
